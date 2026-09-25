@@ -188,8 +188,7 @@ Potential future improvements include:
 
 ## Author
 
-**Nazik Gurbanova**
-Salesforce Developer
+**Nazik Gurbanova | Salesforce Developer**
 
 **Certifications:**
 - Salesforce Certified Administrator
