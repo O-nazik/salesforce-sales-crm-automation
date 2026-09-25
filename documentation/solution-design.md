@@ -53,13 +53,41 @@ Management must have a centralized visual view of relevant sales information thr
 
 4. Solution Architecture
 
-The project follows a declarative Salesforce architecture:
+The project follows a declarative Salesforce architecture that combines data configuration, data validation, process automation, and reporting.
+
+The main solution components are:
+
+- Standard Salesforce objects including Lead, Account, Contact, and Opportunity
+- Custom Sales Activity object (`Sales_Activity__c`)
+- Custom fields for business-specific sales information
+- Validation Rule for Sales Activity data quality
+- Record-Triggered Flow for Lead automation
+- Salesforce Reports for sales analysis
+- Salesforce Dashboard for centralized visibility
+
+The main automation paths are:
+
+Lead Automation:
+
+New Lead
+↓
+Industry = Technology?
+↓ Yes
+Update Lead Rating → Hot
+
+Sales Activity Validation:
+
+Sales Activity
+↓
+Priority = High?
+↓ Yes
+Follow Up Date provided?
+↓ No
+Prevent record from being saved
+
+Reporting:
 
 Salesforce Records
-↓
-Data Validation
-↓
-Flow Automation
 ↓
 Reports
 ↓
@@ -81,81 +109,99 @@ The design avoids unnecessary custom development where standard Salesforce funct
 
 5. Data Model
 
-The project uses Salesforce CRM records together with custom fields required by the business process.
+The solution uses standard Salesforce CRM objects together with a custom Sales Activity object.
 
-Record Layer
+Standard Objects
 
-The record layer contains the sales information used by the business process.
+- Lead
+- Account
+- Contact
+- Opportunity
 
-Custom Field Layer
+Custom Object
 
-Custom fields extend the standard Salesforce data model to capture information that is not available in the standard configuration.
+Sales Activity (`Sales_Activity__c`)
 
-Data Flow
+Key fields include:
 
-User Input → Salesforce Record → Validation → Automation → Reporting
+- Customer Name
+- Status
+- Priority
+- Follow Up Date
+- Notes
 
-This structure ensures that data quality is addressed before information is used for downstream reporting.
+The custom object extends the Salesforce data model to capture sales activity information required by the business process.
 
 ---
 
 6. Data Validation Design
 
-A Validation Rule was implemented to enforce a defined business requirement.
+A Validation Rule was implemented on the Sales Activity object to enforce a business requirement.
 
-Purpose
+Business Rule
 
-The validation layer prevents invalid or incomplete information from being saved.
+A Sales Activity record cannot be saved when Priority is set to High and Follow Up Date is blank.
+
+Validation Logic
+
+AND(
+    ISPICKVAL(Priority__c, "High"),
+    ISBLANK(Follow_Up_Date__c)
+)
 
 Processing Logic
 
-1. The user creates or updates a record.
+1. The user creates or updates a Sales Activity record.
 2. Salesforce evaluates the validation condition.
-3. If the condition is satisfied, the record can be saved.
-4. If the condition is not satisfied, Salesforce prevents the save and displays the validation error.
+3. If Priority is High and Follow Up Date is blank, Salesforce prevents the record from being saved.
+4. Salesforce displays the configured validation error.
+5. If the validation condition is not met, the record can be saved.
 
 Design Benefit
 
-Validation at the point of data entry reduces the possibility of incorrect information entering the reporting and automation process.
+Validation at the point of data entry helps prevent incomplete information from entering the CRM and downstream reporting processes.
 
 ---
 
 7. Automation Design
 
-A Salesforce Flow was implemented to automate the defined business process.
+A Record-Triggered Flow was implemented to automate Lead processing.
 
 Flow Logic
 
-The automation follows this general sequence:
+1. A new Lead is created.
+2. The Flow evaluates the Lead's Industry.
+3. If Industry = Technology, the Flow updates Lead Rating to Hot.
+4. If the condition is not met, the Lead is not updated by this automation.
 
-Record Event → Condition Evaluation → Automated Action → Updated Record State
+Automation Pattern
 
-The Flow evaluates the relevant record conditions and performs the configured action when those conditions are met.
+New Lead
+↓
+Industry = Technology?
+↓ Yes
+Update Rating → Hot
 
 Design Considerations
 
-The Flow was selected because the implemented process can be handled using Salesforce's declarative automation capabilities.
+Salesforce Flow was selected because the implemented business process can be handled using declarative automation capabilities.
 
-This keeps the solution easier to understand and maintain without introducing unnecessary Apex code.
+This keeps the solution maintainable while avoiding unnecessary Apex code for the current requirement.
 
 ---
 
 8. Reporting Design
 
-The reporting layer provides different views of the CRM data.
+Four Salesforce Reports were created:
 
-Four reports were created to support analysis of:
+1. Leads by Status
+2. Sales Pipeline
+3. Sales Activities by Priority
+4. Open Opportunities by Owner
 
-- Leads
-- Opportunities
-- Priority
-- Record ownership
+The reports provide different views of Salesforce CRM data and support analysis of leads, sales pipeline, sales activity priorities, and opportunity ownership.
 
-Reporting Objective
-
-The reports transform Salesforce record data into information that can be reviewed by sales users and management.
-
-The reporting design also provides the data source for the dashboard.
+The reports also provide the data sources used by the Salesforce Dashboard.
 
 ---
 
@@ -182,16 +228,20 @@ The dashboard connects the reporting layer with a management-oriented view of th
 
 10. User Process Flow
 
-The intended user process is:
+Sales Activity Process
 
-1. User creates or updates a Salesforce record.
-2. User enters the required information.
-3. Salesforce evaluates the configured validation rules.
-4. Valid records continue through the configured automation.
-5. Salesforce Flow performs the defined automated action.
-6. Updated records become available for reporting.
-7. Reports organize the CRM information.
-8. The Dashboard provides a centralized visual view.
+1. User creates or updates a Sales Activity record.
+2. User enters Priority and Follow Up Date.
+3. Salesforce evaluates the Validation Rule.
+4. If High Priority is selected without a Follow Up Date, the record cannot be saved.
+5. Valid Sales Activity records become available for reporting.
+
+Lead Automation Process
+
+1. User creates a Lead.
+2. Salesforce evaluates the Lead's Industry.
+3. If Industry = Technology, the Record-Triggered Flow updates Rating to Hot.
+4. The updated Lead becomes available for reporting.
 
 ---
 
@@ -254,7 +304,11 @@ The current declarative architecture therefore provides a foundation for future 
 
 The solution should be tested at each functional layer.
 
-Data Validation Testing
+Validation Rule Testing
+
+- High Priority + Follow Up Date populated → Record saves successfully.
+- High Priority + Follow Up Date blank → Record is blocked.
+- Non-High Priority + Follow Up Date blank → Record can be saved.
 
 Verify that:
 
@@ -263,7 +317,10 @@ Verify that:
 
 Flow Testing
 
-Verify that:
+- New Lead + Industry = Technology → Rating becomes Hot.
+- New Lead + Industry ≠ Technology → Rating is not changed by this Flow.
+
+Verify that: 
 
 - The Flow executes when the required conditions are met.
 - The configured action occurs as expected.
