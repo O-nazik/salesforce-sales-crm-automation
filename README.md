@@ -76,9 +76,7 @@ Custom fields were created to support the business requirements of the sales pro
 
 ### Salesforce Flow
 
-A Salesforce Flow was created to automate the defined business process.
-
-The Flow helps reduce manual actions and ensures that the required process is executed consistently when the relevant record conditions are met. A record-triggered Flow runs when a new Lead is created. If the Lead's Industry is set to Technology, the Flow automatically updates the Lead Rating to Hot.
+A record-triggered Flow runs when a new Lead is created. If the Lead's Industry is set to Technology, the Flow automatically updates the Lead Rating to Hot. This reduces manual work and ensures the process is applied consistently.
 
 ![Salesforce Flow](screenshots/flow.png)
 
