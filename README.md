@@ -50,13 +50,35 @@ The automation reduces manual steps and helps users maintain more consistent CRM
 
 ---
 
+## Custom Object: Sales Activity (Sales_Activity__c)
+
+The Salesforce configuration includes sales activity information that supports the team's CRM workflow.
+
+![Sales Activity](screenshots/sales-activity.jpg)
+
+---
+
+## Custom Fields
+
+Custom fields were created to support the business requirements of the sales process.
+
+- Customer Name
+- Status
+- Priority
+- Follow Up Date
+- Notes
+
+![Custom Fields](screenshots/custom-fields.jpg)
+
+---
+
 ## Automation
 
 ### Salesforce Flow
 
 A Salesforce Flow was created to automate the defined business process.
 
-The Flow helps reduce manual actions and ensures that the required process is executed consistently when the relevant record conditions are met.
+The Flow helps reduce manual actions and ensures that the required process is executed consistently when the relevant record conditions are met. A record-triggered Flow runs when a new Lead is created. If the Lead's Industry is set to Technology, the Flow automatically updates the Lead Rating to Hot.
 
 ![Salesforce Flow](screenshots/flow.png)
 
@@ -66,27 +88,11 @@ The Flow helps reduce manual actions and ensures that the required process is ex
 
 ### Validation Rule
 
-A validation rule was implemented to prevent invalid or incomplete data from being saved.
+A validation rule prevents a Sales Activity record from being saved when Priority is set to High without a Follow Up Date.
 
 This helps maintain consistent and reliable CRM information.
 
 ![Validation Rule](screenshots/validation-rule.png)
-
----
-
-## Custom Fields
-
-Custom fields were created to support the business requirements of the sales process.
-
-![Custom Fields](screenshots/custom-fields.jpg)
-
----
-
-## Sales Activity
-
-The Salesforce configuration includes sales activity information that supports the team's CRM workflow.
-
-![Sales Activity](screenshots/sales-activity.jpg)
 
 ---
 
@@ -100,18 +106,16 @@ The solution provides structured Salesforce records that can be managed through 
 
 ## Reports & Dashboard
 
-Four reports were created to provide different views of the sales data.
+Four reports were created to provide different views of the sales data:
 
-The reports support analysis of:
+1. **Leads by Status** – provides visibility into lead status distribution.
+2. **Sales Pipeline** – provides visibility into the current sales pipeline.
+3. **Sales Activities by Priority** – helps monitor sales activities based on priority.
+4. **Open Opportunities by Owner** – provides visibility into open opportunities by owner.
 
-- Leads
-- Opportunities
-- Priority
-- Record ownership
+A dashboard brings these reporting views together into a centralized business view.
 
-A dashboard brings the reporting information together into a centralized business view.
-
-![Dashboard and Reports](screenshots/dashboard-and-reports.png)
+![Dashboard and Reports](screenshots/06-dashboard-and-reports.png)
 
 ---
 
@@ -145,11 +149,19 @@ The solution provides the following business benefits:
 
 ## Project Architecture
 
-The project follows a simple CRM automation architecture:
+The solution architecture combines Salesforce data modeling, data validation, process automation, and reporting.
 
-**Salesforce Records → Validation → Automation → Reports → Dashboard**
+The architecture includes:
 
-The solution is designed to keep data quality, automation, and reporting connected within the Salesforce platform.
+- Standard Salesforce objects: Lead, Account, Contact, and Opportunity
+- Custom Sales Activity object (`Sales_Activity__c`)
+- Validation rules for data quality
+- Record-Triggered Flow for Lead automation
+- Reports and Dashboard for sales visibility
+
+### Solution Architecture
+
+![Salesforce Sales CRM Automation Solution Architecture](Diagrams/Salesforce-Sales-CRM-Automation-Architecture.png)
 
 ---
 
