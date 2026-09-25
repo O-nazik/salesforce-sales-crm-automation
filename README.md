@@ -115,7 +115,7 @@ Four reports were created to provide different views of the sales data:
 
 A dashboard brings these reporting views together into a centralized business view.
 
-![Dashboard and Reports](screenshots/06-dashboard-and-reports.png)
+![Dashboard and Reports](screenshots/dashboard-and-reports.png)
 
 ---
 
@@ -161,7 +161,7 @@ The architecture includes:
 
 ### Solution Architecture
 
-![Salesforce Sales CRM Automation Solution Architecture](Diagrams/Salesforce-Sales-CRM-Automation-Architecture.png)
+![Salesforce Sales CRM Automation Solution Architecture](diagrams/Salesforce-Sales-CRM-Automation-Architecture.png)
 
 ---
 
