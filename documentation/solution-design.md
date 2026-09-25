@@ -391,10 +391,10 @@ Salesforce AI and Agentforce capabilities could later be introduced to support i
 
 16. Conclusion
 
-This project demonstrates an end-to-end Salesforce CRM configuration using data customization, validation, automation, reporting, and dashboard functionality.
+This project demonstrates a complete Salesforce CRM configuration using data customization, validation, automation, reporting, and dashboard functionality.
 
 The solution separates the main layers of the CRM process:
 
 Data → Validation → Automation → Reporting → Visualization
 
-This structure provides a maintainable starting point for expanding the solution with Apex, Lightning Web Components, integrations, and Salesforce AI capabilities.
+This structure provides a maintainable foundation for future enhancements, including Apex, Lightning Web Components, external integrations, and Salesforce AI capabilities.
