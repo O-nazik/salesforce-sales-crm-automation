@@ -70,7 +70,7 @@ A validation rule was implemented to prevent invalid or incomplete data from bei
 
 This helps maintain consistent and reliable CRM information.
 
-![Validation Rule](screenshots/validation-rule.jpg)
+![Validation Rule](screenshots/validation-rule.png)
 
 ---
 
